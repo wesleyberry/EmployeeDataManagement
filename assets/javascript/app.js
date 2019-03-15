@@ -28,9 +28,11 @@ database.ref().on("child_added",function(snap){
         elements[i].attr("scope","col");
         console.log(elements[i].text());
     }
-    var temp=elements[3];
-    elements[3]=elements[4]
-    elements[4]=temp;
+    var months = moment(moment()).diff(newStart.text(),"months");
+    elements[3]=newMonths;
+    elements[4]=newRate;
+    newMonths.text(months);
+    newPaid.text(months*+newRate.text());
     elements.forEach(function(element){
         newLine.append(element);
     });
@@ -39,13 +41,15 @@ database.ref().on("child_added",function(snap){
 
 $("#add-employee-btn").on("click",function(event){
     event.preventDefault()
-    console.log("b");
     database.ref().push({
         name:$("#employee-name-input").val().trim(),
         role:$("#role-input").val().trim(),
         start:$("#start-input").val().trim(),
         rate:$("#rate-input").val().trim()
     });
-    console.log("a");
+    $("#employee-name-input").val("");
+    $("#role-input").val("");
+    $("#start-input").val("");
+    $("#rate-input").val("");
 });
 
