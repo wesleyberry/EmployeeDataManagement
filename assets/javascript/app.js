@@ -11,8 +11,30 @@ firebase.initializeApp(config);
 
 var database = firebase.database();
 
-database.ref().on("child_added",function(){
-    console.log("okay");
+database.ref().on("child_added",function(snap){
+    var newLine=$("<tr>");
+    var newName=$("<tb>");
+    var newRole=$("<tb>");
+    var newStart=$("<tb>");
+    var newRate=$("<tb>");
+    var newMonths=$("<tb>");
+    var newPaid=$("<tb>");
+    var elements=[newName,newRole,newStart,newRate,newMonths,newPaid];
+    var fromDB=[snap.val().name,snap.val().role,snap.val().start,snap.val().rate];
+    for (var i=0;i<elements.length;i++){
+        if(i<fromDB.length){
+            elements[i].text(fromDB[i]);
+        }
+        elements[i].attr("scope","col");
+        console.log(elements[i].text());
+    }
+    var temp=elements[3];
+    elements[3]=elements[4]
+    elements[4]=temp;
+    elements.forEach(function(element){
+        newLine.append(element);
+    });
+    $("#employee-table").append(newLine);
 });
 
 $("#add-employee-btn").on("click",function(event){
